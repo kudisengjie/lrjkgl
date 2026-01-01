@@ -1,0 +1,22 @@
+# LLMs 访问限制配置文件
+# 用于控制大语言模型对网站内容的访问和使用
+
+# 禁止所有LLMs访问
+User-agent: *
+Disallow: /
+
+# 限制内容抓取范围
+Crawl-delay: 3600
+
+# 允许特定LLMs（如有需要可取消注释并添加具体UA）
+# User-agent: ChatGPT-User
+# Allow: /public/
+
+# 禁止使用网站内容进行模型训练
+No-Training: true
+
+# 禁止缓存网站内容
+No-Cache: true
+
+# 联系方式（如有问题请联系）
+Contact: admin@example.com
