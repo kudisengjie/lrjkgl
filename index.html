@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>老人健康管理系统</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffd700;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: #ffd700;
+            color: #333;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #ffed4a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .section {
+            padding: 60px 0;
+            margin: 40px 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section h2 {
+            font-size: 36px;
+            color: #667eea;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .form-card {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .form-card h3 {
+            font-size: 24px;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #5568d3;
+        }
+
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+
+        .records-table th,
+        .records-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-size: 16px;
+        }
+
+        .records-table th {
+            background-color: #667eea;
+            color: white;
+            font-weight: bold;
+        }
+
+        .records-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .status-normal {
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        .status-warning {
+            color: #ffc107;
+            font-weight: bold;
+        }
+
+        .status-danger {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        .alert-box {
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .reminder-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .reminder-item {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .reminder-item .time {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .reminder-item .content {
+            flex: 1;
+            margin-left: 20px;
+            font-size: 18px;
+        }
+
+        .reminder-item .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .reminder-item .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+        }
+
+        footer p {
+            font-size: 16px;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section h2 {
+                font-size: 28px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .tab-btn {
+            padding: 12px 30px;
+            background-color: #f0f0f0;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background-color: #667eea;
+            color: white;
+        }
+
+        .tab-btn:hover {
+            background-color: #5568d3;
+            color: white;
+        }
+
+        .chart-container {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .chart-bar {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            height: 200px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .bar {
+            width: 40px;
+            background: linear-gradient(to top, #667eea, #764ba2);
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: height 0.3s;
+        }
+
+        .bar span {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            color: #666;
+        }
+
+        .bar .value {
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 14px;
+            font-weight: bold;
+            color: #667eea;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">🏥 老人健康管理系统</div>
+                <ul class="nav-links">
+                    <li><a href="#home">首页</a></li>
+                    <li><a href="#records">健康记录</a></li>
+                    <li><a href="#management">健康管理</a></li>
+                    <li><a href="#about">关于我们</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <h1>关爱老人健康，守护幸福晚年</h1>
+            <p>专业的健康记录与管理平台，让关爱更贴心</p>
+            <a href="#records" class="btn">开始记录</a>
+        </div>
+    </section>
+
+    <div class="container">
+        <section id="records" class="section">
+            <h2>📊 健康记录</h2>
+            
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="showTab('blood-pressure')">血压记录</button>
+                <button class="tab-btn" onclick="showTab('blood-sugar')">血糖记录</button>
+                <button class="tab-btn" onclick="showTab('heart-rate')">心率记录</button>
+                <button class="tab-btn" onclick="showTab('medication')">用药记录</button>
+            </div>
+
+            <div id="blood-pressure" class="tab-content">
+                <div class="form-card">
+                    <h3>血压记录</h3>
+                    <form id="bloodPressureForm">
+                        <div class="form-group">
+                            <label>测量日期</label>
+                            <input type="date" id="bpDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>收缩压（高压）mmHg</label>
+                            <input type="number" id="bpSystolic" placeholder="例如：120" required>
+                        </div>
+                        <div class="form-group">
+                            <label>舒张压（低压）mmHg</label>
+                            <input type="number" id="bpDiastolic" placeholder="例如：80" required>
+                        </div>
+                        <div class="form-group">
+                            <label>测量时间</label>
+                            <select id="bpTime">
+                                <option value="morning">早晨</option>
+                                <option value="noon">中午</option>
+                                <option value="evening">晚上</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>备注</label>
+                            <textarea id="bpNotes" placeholder="如有特殊情况请记录"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">保存记录</button>
+                    </form>
+                </div>
+                <div id="bpAlert" class="alert-box hidden"></div>
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>时间</th>
+                            <th>收缩压</th>
+                            <th>舒张压</th>
+                            <th>状态</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bpTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="blood-sugar" class="tab-content hidden">
+                <div class="form-card">
+                    <h3>血糖记录</h3>
+                    <form id="bloodSugarForm">
+                        <div class="form-group">
+                            <label>测量日期</label>
+                            <input type="date" id="bsDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>血糖值 mmol/L</label>
+                            <input type="number" id="bsValue" step="0.1" placeholder="例如：5.6" required>
+                        </div>
+                        <div class="form-group">
+                            <label>测量时段</label>
+                            <select id="bsTime">
+                                <option value="fasting">空腹</option>
+                                <option value="after-meal">餐后2小时</option>
+                                <option value="random">随机</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>备注</label>
+                            <textarea id="bsNotes" placeholder="如有特殊情况请记录"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">保存记录</button>
+                    </form>
+                </div>
+                <div id="bsAlert" class="alert-box hidden"></div>
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>时段</th>
+                            <th>血糖值</th>
+                            <th>状态</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bsTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="heart-rate" class="tab-content hidden">
+                <div class="form-card">
+                    <h3>心率记录</h3>
+                    <form id="heartRateForm">
+                        <div class="form-group">
+                            <label>测量日期</label>
+                            <input type="date" id="hrDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>心率（次/分钟）</label>
+                            <input type="number" id="hrValue" placeholder="例如：75" required>
+                        </div>
+                        <div class="form-group">
+                            <label>测量时间</label>
+                            <select id="hrTime">
+                                <option value="resting">静息</option>
+                                <option value="after-exercise">运动后</option>
+                                <option value="random">随机</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>备注</label>
+                            <textarea id="hrNotes" placeholder="如有特殊情况请记录"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">保存记录</button>
+                    </form>
+                </div>
+                <div id="hrAlert" class="alert-box hidden"></div>
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>时间</th>
+                            <th>心率</th>
+                            <th>状态</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hrTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="medication" class="tab-content hidden">
+                <div class="form-card">
+                    <h3>用药记录</h3>
+                    <form id="medicationForm">
+                        <div class="form-group">
+                            <label>用药日期</label>
+                            <input type="date" id="medDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>药品名称</label>
+                            <input type="text" id="medName" placeholder="例如：降压药" required>
+                        </div>
+                        <div class="form-group">
+                            <label>剂量</label>
+                            <input type="text" id="medDosage" placeholder="例如：1片" required>
+                        </div>
+                        <div class="form-group">
+                            <label>用药时间</label>
+                            <select id="medTime">
+                                <option value="morning">早晨</option>
+                                <option value="noon">中午</option>
+                                <option value="evening">晚上</option>
+                                <option value="bedtime">睡前</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>备注</label>
+                            <textarea id="medNotes" placeholder="如有特殊情况请记录"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">保存记录</button>
+                    </form>
+                </div>
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>药品名称</th>
+                            <th>剂量</th>
+                            <th>时间</th>
+                            <th>备注</th>
+                        </tr>
+                    </thead>
+                    <tbody id="medTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="management" class="section">
+            <h2>⏰ 健康管理</h2>
+            
+            <div class="form-grid">
+                <div class="form-card">
+                    <h3>添加健康提醒</h3>
+                    <form id="reminderForm">
+                        <div class="form-group">
+                            <label>提醒时间</label>
+                            <input type="time" id="reminderTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label>提醒内容</label>
+                            <input type="text" id="reminderContent" placeholder="例如：测量血压" required>
+                        </div>
+                        <div class="form-group">
+                            <label>提醒频率</label>
+                            <select id="reminderFrequency">
+                                <option value="daily">每天</option>
+                                <option value="weekly">每周</option>
+                                <option value="monthly">每月</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-submit">添加提醒</button>
+                    </form>
+                </div>
+
+                <div class="form-card">
+                    <h3>医生预约</h3>
+                    <form id="appointmentForm">
+                        <div class="form-group">
+                            <label>预约日期</label>
+                            <input type="date" id="appointmentDate" required>
+                        </div>
+                        <div class="form-group">
+                            <label>预约时间</label>
+                            <input type="time" id="appointmentTime" required>
+                        </div>
+                        <div class="form-group">
+                            <label>医生姓名</label>
+                            <input type="text" id="doctorName" placeholder="例如：王医生" required>
+                        </div>
+                        <div class="form-group">
+                            <label>科室</label>
+                            <input type="text" id="department" placeholder="例如：心内科" required>
+                        </div>
+                        <div class="form-group">
+                            <label>就诊原因</label>
+                            <textarea id="visitReason" placeholder="请描述就诊原因"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">预约挂号</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="form-card" style="margin-top: 30px;">
+                <h3>健康提醒列表</h3>
+                <ul class="reminder-list" id="reminderList">
+                </ul>
+            </div>
+
+            <div class="form-card" style="margin-top: 30px;">
+                <h3>预约记录</h3>
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>时间</th>
+                            <th>医生</th>
+                            <th>科室</th>
+                            <th>就诊原因</th>
+                        </tr>
+                    </thead>
+                    <tbody id="appointmentTableBody">
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="chart-container">
+                <h3>健康趋势（最近7次血压记录）</h3>
+                <div class="chart-bar" id="bpChart">
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <h2>ℹ️ 关于我们</h2>
+            <div class="form-card">
+                <h3>系统介绍</h3>
+                <p style="font-size: 18px; line-height: 1.8; margin-top: 20px;">
+                    老人健康管理系统是一款专为老年人设计的健康管理工具，旨在帮助老年人及其家人更好地记录和管理健康数据。
+                    系统提供血压、血糖、心率等健康指标的记录功能，以及用药提醒、医生预约等健康管理功能。
+                </p>
+                <p style="font-size: 18px; line-height: 1.8; margin-top: 20px;">
+                    我们致力于通过简单易用的界面和贴心的功能，让老年人能够轻松管理自己的健康，享受幸福的晚年生活。
+                </p>
+            </div>
+            <div class="form-card" style="margin-top: 30px;">
+                <h3>联系方式</h3>
+                <p style="font-size: 18px; margin-top: 20px;">
+                    📞 客服电话：400-123-4567<br>
+                    📧 邮箱：support@healthcare.com<br>
+                    🏢 地址：北京市朝阳区健康路123号
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 老人健康管理系统 版权所有</p>
+            <p>关爱老人，守护健康</p>
+        </div>
+    </footer>
+
+    <script>
+        let bloodPressureRecords = JSON.parse(localStorage.getItem('bloodPressureRecords')) || [];
+        let bloodSugarRecords = JSON.parse(localStorage.getItem('bloodSugarRecords')) || [];
+        let heartRateRecords = JSON.parse(localStorage.getItem('heartRateRecords')) || [];
+        let medicationRecords = JSON.parse(localStorage.getItem('medicationRecords')) || [];
+        let reminders = JSON.parse(localStorage.getItem('reminders')) || [];
+        let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.remove('hidden');
+            event.target.classList.add('active');
+        }
+
+        function saveToLocalStorage() {
+            localStorage.setItem('bloodPressureRecords', JSON.stringify(bloodPressureRecords));
+            localStorage.setItem('bloodSugarRecords', JSON.stringify(bloodSugarRecords));
+            localStorage.setItem('heartRateRecords', JSON.stringify(heartRateRecords));
+            localStorage.setItem('medicationRecords', JSON.stringify(medicationRecords));
+            localStorage.setItem('reminders', JSON.stringify(reminders));
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+        }
+
+        function showAlert(elementId, message, type) {
+            const alert = document.getElementById(elementId);
+            alert.className = `alert-box alert-${type}`;
+            alert.textContent = message;
+            alert.classList.remove('hidden');
+            setTimeout(() => {
+                alert.classList.add('hidden');
+            }, 3000);
+        }
+
+        function getBPStatus(systolic, diastolic) {
+            if (systolic < 90 || diastolic < 60) return { text: '偏低', class: 'status-warning' };
+            if (systolic <= 120 && diastolic <= 80) return { text: '正常', class: 'status-normal' };
+            if (systolic <= 139 && diastolic <= 89) return { text: '偏高', class: 'status-warning' };
+            return { text: '高血压', class: 'status-danger' };
+        }
+
+        function getBSStatus(value, time) {
+            if (time === 'fasting') {
+                if (value < 3.9) return { text: '偏低', class: 'status-warning' };
+                if (value <= 6.1) return { text: '正常', class: 'status-normal' };
+                if (value <= 7.0) return { text: '偏高', class: 'status-warning' };
+                return { text: '高血糖', class: 'status-danger' };
+            } else {
+                if (value < 3.9) return { text: '偏低', class: 'status-warning' };
+                if (value <= 7.8) return { text: '正常', class: 'status-normal' };
+                if (value <= 11.1) return { text: '偏高', class: 'status-warning' };
+                return { text: '高血糖', class: 'status-danger' };
+            }
+        }
+
+        function getHRStatus(value, time) {
+            if (time === 'resting') {
+                if (value < 60) return { text: '偏低', class: 'status-warning' };
+                if (value <= 100) return { text: '正常', class: 'status-normal' };
+                return { text: '偏高', class: 'status-warning' };
+            } else {
+                if (value < 60) return { text: '偏低', class: 'status-warning' };
+                if (value <= 120) return { text: '正常', class: 'status-normal' };
+                return { text: '偏高', class: 'status-warning' };
+            }
+        }
+
+        function renderBPTable() {
+            const tbody = document.getElementById('bpTableBody');
+            tbody.innerHTML = '';
+            bloodPressureRecords.forEach(record => {
+                const status = getBPStatus(record.systolic, record.diastolic);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.date}</td>
+                    <td>${record.time}</td>
+                    <td>${record.systolic}</td>
+                    <td>${record.diastolic}</td>
+                    <td class="${status.class}">${status.text}</td>
+                    <td>${record.notes || '-'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+            updateBPChart();
+        }
+
+        function renderBSTable() {
+            const tbody = document.getElementById('bsTableBody');
+            tbody.innerHTML = '';
+            bloodSugarRecords.forEach(record => {
+                const status = getBSStatus(record.value, record.time);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.date}</td>
+                    <td>${record.time}</td>
+                    <td>${record.value}</td>
+                    <td class="${status.class}">${status.text}</td>
+                    <td>${record.notes || '-'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderHRTable() {
+            const tbody = document.getElementById('hrTableBody');
+            tbody.innerHTML = '';
+            heartRateRecords.forEach(record => {
+                const status = getHRStatus(record.value, record.time);
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.date}</td>
+                    <td>${record.time}</td>
+                    <td>${record.value}</td>
+                    <td class="${status.class}">${status.text}</td>
+                    <td>${record.notes || '-'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderMedTable() {
+            const tbody = document.getElementById('medTableBody');
+            tbody.innerHTML = '';
+            medicationRecords.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.date}</td>
+                    <td>${record.name}</td>
+                    <td>${record.dosage}</td>
+                    <td>${record.time}</td>
+                    <td>${record.notes || '-'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderReminders() {
+            const list = document.getElementById('reminderList');
+            list.innerHTML = '';
+            reminders.forEach((reminder, index) => {
+                const li = document.createElement('li');
+                li.className = 'reminder-item';
+                li.innerHTML = `
+                    <span class="time">${reminder.time}</span>
+                    <span class="content">${reminder.content} (${reminder.frequency})</span>
+                    <button class="btn-delete" onclick="deleteReminder(${index})">删除</button>
+                `;
+                list.appendChild(li);
+            });
+        }
+
+        function renderAppointments() {
+            const tbody = document.getElementById('appointmentTableBody');
+            tbody.innerHTML = '';
+            appointments.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${record.date}</td>
+                    <td>${record.time}</td>
+                    <td>${record.doctor}</td>
+                    <td>${record.department}</td>
+                    <td>${record.reason || '-'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateBPChart() {
+            const chart = document.getElementById('bpChart');
+            const recentRecords = bloodPressureRecords.slice(-7);
+            chart.innerHTML = '';
+            
+            if (recentRecords.length === 0) {
+                chart.innerHTML = '<p style="text-align: center; color: #666;">暂无数据</p>';
+                return;
+            }
+
+            const maxSystolic = Math.max(...recentRecords.map(r => r.systolic));
+            const maxHeight = 150;
+
+            recentRecords.forEach(record => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                const height = (record.systolic / maxSystolic) * maxHeight;
+                bar.style.height = height + 'px';
+                bar.innerHTML = `
+                    <span class="value">${record.systolic}</span>
+                    <span>${record.date.slice(5)}</span>
+                `;
+                chart.appendChild(bar);
+            });
+        }
+
+        function deleteReminder(index) {
+            reminders.splice(index, 1);
+            saveToLocalStorage();
+            renderReminders();
+        }
+
+        document.getElementById('bloodPressureForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const record = {
+                date: document.getElementById('bpDate').value,
+                systolic: parseInt(document.getElementById('bpSystolic').value),
+                diastolic: parseInt(document.getElementById('bpDiastolic').value),
+                time: document.getElementById('bpTime').value,
+                notes: document.getElementById('bpNotes').value
+            };
+            bloodPressureRecords.push(record);
+            saveToLocalStorage();
+            renderBPTable();
+            showAlert('bpAlert', '血压记录保存成功！', 'success');
+            this.reset();
+        });
+
+        document.getElementById('bloodSugarForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const record = {
+                date: document.getElementById('bsDate').value,
+                value: parseFloat(document.getElementById('bsValue').value),
+                time: document.getElementById('bsTime').value,
+                notes: document.getElementById('bsNotes').value
+            };
+            bloodSugarRecords.push(record);
+            saveToLocalStorage();
+            renderBSTable();
+            showAlert('bsAlert', '血糖记录保存成功！', 'success');
+            this.reset();
+        });
+
+        document.getElementById('heartRateForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const record = {
+                date: document.getElementById('hrDate').value,
+                value: parseInt(document.getElementById('hrValue').value),
+                time: document.getElementById('hrTime').value,
+                notes: document.getElementById('hrNotes').value
+            };
+            heartRateRecords.push(record);
+            saveToLocalStorage();
+            renderHRTable();
+            showAlert('hrAlert', '心率记录保存成功！', 'success');
+            this.reset();
+        });
+
+        document.getElementById('medicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const record = {
+                date: document.getElementById('medDate').value,
+                name: document.getElementById('medName').value,
+                dosage: document.getElementById('medDosage').value,
+                time: document.getElementById('medTime').value,
+                notes: document.getElementById('medNotes').value
+            };
+            medicationRecords.push(record);
+            saveToLocalStorage();
+            renderMedTable();
+            this.reset();
+        });
+
+        document.getElementById('reminderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const reminder = {
+                time: document.getElementById('reminderTime').value,
+                content: document.getElementById('reminderContent').value,
+                frequency: document.getElementById('reminderFrequency').value
+            };
+            reminders.push(reminder);
+            saveToLocalStorage();
+            renderReminders();
+            this.reset();
+        });
+
+        document.getElementById('appointmentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const appointment = {
+                date: document.getElementById('appointmentDate').value,
+                time: document.getElementById('appointmentTime').value,
+                doctor: document.getElementById('doctorName').value,
+                department: document.getElementById('department').value,
+                reason: document.getElementById('visitReason').value
+            };
+            appointments.push(appointment);
+            saveToLocalStorage();
+            renderAppointments();
+            this.reset();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderBPTable();
+            renderBSTable();
+            renderHRTable();
+            renderMedTable();
+            renderReminders();
+            renderAppointments();
+        });
+    </script>
+</body>
+</html>
