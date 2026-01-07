@@ -58,6 +58,123 @@
         .nav-links a:hover {
             color: #ffd700;
         }
+        
+        .theme-toggle {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: rotate(180deg);
+        }
+        
+        /* 深色模式样式 */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        
+        body.dark-mode .section {
+            background-color: #1e1e1e;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-mode .form-card {
+            background-color: #1e1e1e;
+            border-left-color: #8a2be2;
+        }
+        
+        body.dark-mode .form-card h3 {
+            color: #b39ddb;
+        }
+        
+        body.dark-mode .form-group label {
+            color: #b0bec5;
+        }
+        
+        body.dark-mode input, 
+        body.dark-mode textarea, 
+        body.dark-mode select {
+            background-color: #2d2d2d;
+            color: #e0e0e0;
+            border: 1px solid #444;
+        }
+        
+        body.dark-mode input:focus, 
+        body.dark-mode textarea:focus, 
+        body.dark-mode select:focus {
+            border-color: #8a2be2;
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+        }
+        
+        body.dark-mode .btn-submit {
+            background-color: #8a2be2;
+        }
+        
+        body.dark-mode .btn-submit:hover {
+            background-color: #9370db;
+        }
+        
+        body.dark-mode .records-table {
+            background-color: #1e1e1e;
+        }
+        
+        body.dark-mode .records-table th {
+            background-color: #8a2be2;
+        }
+        
+        body.dark-mode .records-table td, 
+        body.dark-mode .records-table th {
+            border-bottom: 1px solid #444;
+        }
+        
+        body.dark-mode .records-table tr:hover {
+            background-color: #2d2d2d;
+        }
+        
+        body.dark-mode .card {
+            background-color: #1e1e1e;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        body.dark-mode .reminder-item {
+            background-color: #1e1e1e;
+            border: 1px solid #444;
+        }
+        
+        body.dark-mode .appointment-item {
+            background-color: #1e1e1e;
+            border: 1px solid #444;
+        }
+        
+        body.dark-mode .alert-success {
+            background-color: #2e7d32;
+            color: #c8e6c9;
+            border-color: #388e3c;
+        }
+        
+        body.dark-mode .alert-warning {
+            background-color: #f57f17;
+            color: #fffde7;
+            border-color: #ffb300;
+        }
+        
+        body.dark-mode .alert-error {
+            background-color: #c62828;
+            color: #ffcdd2;
+            border-color: #d32f2f;
+        }
+        
+        body.dark-mode .chart-bar .bar {
+            background: linear-gradient(to top, #8a2be2 0%, #9370db 100%);
+        }
 
         .hero {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -123,6 +240,73 @@
             padding: 30px;
             border-radius: 10px;
             border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .records-table tr {
+            transition: background-color 0.2s ease;
+        }
+        
+        .records-table tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .chart-bar .bar {
+            animation: growBar 0.8s ease-out forwards;
+        }
+        
+        @keyframes growBar {
+            from {
+                height: 0;
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            transition: all 0.2s ease;
+        }
+        
+        input, textarea, select {
+            transition: all 0.2s ease;
+        }
+        
+        .alert-box {
+            transition: all 0.3s ease;
+        }
+        
+        .tab-content {
+            animation: fadeIn 0.3s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .btn-submit {
+            transition: all 0.3s ease;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
         }
 
         .form-card h3 {
@@ -412,6 +596,7 @@
                     <li><a href="#management">健康管理</a></li>
                     <li><a href="#about">关于我们</a></li>
                 </ul>
+                <button id="themeToggle" class="theme-toggle">🌙</button>
             </nav>
         </div>
     </header>
@@ -442,14 +627,17 @@
                         <div class="form-group">
                             <label>测量日期</label>
                             <input type="date" id="bpDate" required>
+                            <div id="bpDateAlert" class="alert-box alert-error hidden"></div>
                         </div>
                         <div class="form-group">
                             <label>收缩压（高压）mmHg</label>
                             <input type="number" id="bpSystolic" placeholder="例如：120" required>
+                            <div id="bpSystolicAlert" class="alert-box alert-error hidden"></div>
                         </div>
                         <div class="form-group">
                             <label>舒张压（低压）mmHg</label>
                             <input type="number" id="bpDiastolic" placeholder="例如：80" required>
+                            <div id="bpDiastolicAlert" class="alert-box alert-error hidden"></div>
                         </div>
                         <div class="form-group">
                             <label>测量时间</label>
@@ -458,6 +646,7 @@
                                 <option value="noon">中午</option>
                                 <option value="evening">晚上</option>
                             </select>
+                            <div id="bpTimeAlert" class="alert-box alert-error hidden"></div>
                         </div>
                         <div class="form-group">
                             <label>备注</label>
@@ -696,8 +885,20 @@
             </div>
 
             <div class="chart-container">
-                <h3>健康趋势（最近7次血压记录）</h3>
+                <h3>血压趋势（最近7次记录）</h3>
                 <div class="chart-bar" id="bpChart">
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3>血糖趋势（最近7次记录）</h3>
+                <div class="chart-bar" id="bsChart">
+                </div>
+            </div>
+            
+            <div class="chart-container">
+                <h3>心率趋势（最近7次记录）</h3>
+                <div class="chart-bar" id="hrChart">
                 </div>
             </div>
         </section>
@@ -837,6 +1038,7 @@
                 `;
                 tbody.appendChild(row);
             });
+            updateBSChart();
         }
 
         function renderHRTable() {
@@ -854,6 +1056,7 @@
                 `;
                 tbody.appendChild(row);
             });
+            updateHRChart();
         }
 
         function renderMedTable() {
@@ -929,14 +1132,132 @@
             });
         }
 
+        function updateBSChart() {
+            const chart = document.getElementById('bsChart');
+            const recentRecords = bloodSugarRecords.slice(-7);
+            chart.innerHTML = '';
+            
+            if (recentRecords.length === 0) {
+                chart.innerHTML = '<p style="text-align: center; color: #666;">暂无数据</p>';
+                return;
+            }
+
+            const maxValue = Math.max(...recentRecords.map(r => r.value));
+            const maxHeight = 150;
+
+            recentRecords.forEach(record => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.background = 'linear-gradient(to top, #f093fb 0%, #f5576c 100%)';
+                const height = (record.value / maxValue) * maxHeight;
+                bar.style.height = height + 'px';
+                bar.innerHTML = `
+                    <span class="value">${record.value}</span>
+                    <span>${record.date.slice(5)}</span>
+                `;
+                chart.appendChild(bar);
+            });
+        }
+
+        function updateHRChart() {
+            const chart = document.getElementById('hrChart');
+            const recentRecords = heartRateRecords.slice(-7);
+            chart.innerHTML = '';
+            
+            if (recentRecords.length === 0) {
+                chart.innerHTML = '<p style="text-align: center; color: #666;">暂无数据</p>';
+                return;
+            }
+
+            const maxValue = Math.max(...recentRecords.map(r => r.value));
+            const maxHeight = 150;
+
+            recentRecords.forEach(record => {
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.background = 'linear-gradient(to top, #4facfe 0%, #00f2fe 100%)';
+                const height = (record.value / maxValue) * maxHeight;
+                bar.style.height = height + 'px';
+                bar.innerHTML = `
+                    <span class="value">${record.value}</span>
+                    <span>${record.date.slice(5)}</span>
+                `;
+                chart.appendChild(bar);
+            });
+        }
+
         function deleteReminder(index) {
             reminders.splice(index, 1);
             saveToLocalStorage();
             renderReminders();
         }
 
+        function validateBPForm() {
+            const date = document.getElementById('bpDate').value;
+            const systolic = document.getElementById('bpSystolic').value;
+            const diastolic = document.getElementById('bpDiastolic').value;
+            const time = document.getElementById('bpTime').value;
+            
+            let isValid = true;
+            
+            if (!date) {
+                showAlert('bpDateAlert', '请选择日期', 'error');
+                isValid = false;
+            } else {
+                document.getElementById('bpDateAlert').classList.add('hidden');
+            }
+            
+            if (!time) {
+                showAlert('bpTimeAlert', '请选择时间', 'error');
+                isValid = false;
+            } else {
+                document.getElementById('bpTimeAlert').classList.add('hidden');
+            }
+            
+            if (!systolic || isNaN(systolic) || systolic < 60 || systolic > 200) {
+                showAlert('bpSystolicAlert', '收缩压应在60-200之间', 'error');
+                isValid = false;
+            } else {
+                document.getElementById('bpSystolicAlert').classList.add('hidden');
+            }
+            
+            if (!diastolic || isNaN(diastolic) || diastolic < 40 || diastolic > 120) {
+                showAlert('bpDiastolicAlert', '舒张压应在40-120之间', 'error');
+                isValid = false;
+            } else {
+                document.getElementById('bpDiastolicAlert').classList.add('hidden');
+            }
+            
+            return isValid;
+        }
+
+        // 添加实时验证
+        document.getElementById('bpSystolic').addEventListener('input', function() {
+            const value = this.value;
+            if (value && (isNaN(value) || value < 60 || value > 200)) {
+                showAlert('bpSystolicAlert', '收缩压应在60-200之间', 'error');
+            } else if (value) {
+                document.getElementById('bpSystolicAlert').classList.add('hidden');
+            }
+        });
+
+        document.getElementById('bpDiastolic').addEventListener('input', function() {
+            const value = this.value;
+            if (value && (isNaN(value) || value < 40 || value > 120)) {
+                showAlert('bpDiastolicAlert', '舒张压应在40-120之间', 'error');
+            } else if (value) {
+                document.getElementById('bpDiastolicAlert').classList.add('hidden');
+            }
+        });
+
         document.getElementById('bloodPressureForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            if (!validateBPForm()) {
+                showAlert('bpAlert', '请修正表单中的错误', 'error');
+                return;
+            }
+            
             const record = {
                 date: document.getElementById('bpDate').value,
                 systolic: parseInt(document.getElementById('bpSystolic').value),
@@ -944,6 +1265,7 @@
                 time: document.getElementById('bpTime').value,
                 notes: document.getElementById('bpNotes').value
             };
+            
             bloodPressureRecords.push(record);
             saveToLocalStorage();
             renderBPTable();
@@ -1024,6 +1346,31 @@
             this.reset();
         });
 
+        // 深色模式切换功能
+        const themeToggle = document.getElementById('themeToggle');
+        
+        // 检查用户的主题偏好
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.body.classList.add('dark-mode');
+            themeToggle.textContent = '☀️';
+        } else {
+            document.body.classList.remove('dark-mode');
+            themeToggle.textContent = '🌙';
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark');
+                this.textContent = '☀️';
+            } else {
+                localStorage.setItem('theme', 'light');
+                this.textContent = '🌙';
+            }
+        });
+        
         document.addEventListener('DOMContentLoaded', function() {
             renderBPTable();
             renderBSTable();
@@ -1031,6 +1378,9 @@
             renderMedTable();
             renderReminders();
             renderAppointments();
+            updateBPChart();
+            updateBSChart();
+            updateHRChart();
         });
     </script>
 </body>
